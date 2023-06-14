@@ -1,71 +1,34 @@
-# -*- coding: utf-8 -*-
-"""
-Задание 5.2
+network = input("Введите IP-сеть в формате x.x.x.x/n: ")
+ip, mask = network.split("/")
+ip_list = ip.split(".")
+mask = int(mask)
 
-Запросить у пользователя ввод IP-сети в формате: 10.1.1.0/24
+oct1, oct2, oct3, oct4 = [
+    int(ip_list[0]),
+    int(ip_list[1]),
+    int(ip_list[2]),
+    int(ip_list[3]),
+]
 
-Затем вывести информацию о сети и маске в таком формате:
+bin_mask = "1" * mask + "0" * (32 - mask)
+m1, m2, m3, m4 = [
+    int(bin_mask[0:8], 2),
+    int(bin_mask[8:16], 2),
+    int(bin_mask[16:24], 2),
+    int(bin_mask[24:32], 2),
+]
 
+ip_output = """
 Network:
-10        1         1         0
-00001010  00000001  00000001  00000000
+{0:<8}  {1:<8}  {2:<8}  {3:<8}
+{0:08b}  {1:08b}  {2:08b}  {3:08b}"""
 
+mask_output = """
 Mask:
-/24
-255       255       255       0
-11111111  11111111  11111111  00000000
-
-Проверить работу скрипта на разных комбинациях сеть/маска.
-
-Вывод сети и маски должен быть упорядочен также, как в примере:
-- столбцами
-- ширина столбца 10 символов (в двоичном формате
-  надо добавить два пробела между столбцами
-  для разделения октетов между собой)
-
-Подсказка: Получить маску в двоичном формате можно так:
-In [1]: "1" * 28 + "0" * 4
-Out[1]: '11111111111111111111111111110000'
-
-
-Ограничение: Все задания надо выполнять используя только пройденные темы.
+/{0}
+{1:<8}  {2:<8}  {3:<8}  {4:<8}
+{1:08b}  {2:08b}  {3:08b}  {4:08b}
 """
 
-
-#ip
-network = input('Введите адрес сети с префиксом(Например 10.1.1.0/24): ')
-ip = network[:network.find('/')]
-ip = ip.split('.')
-ip1 = int(ip[0])
-ip2 = int(ip[1])
-ip3 = int(ip[2])
-ip4 = int(ip[3])
-
-ip_template = """
-Network:
-{0:<10}{1:<10}{2:<10}{3:<10}
-{0:<08b}  {1:<08b}  {2:<08b}  {3:<08b}
-"""
-print(ip_template.format(ip1, ip2, ip3, ip4))
-
-#mask
-mask = network[network.find('/')::]
-mask1 = mask.lstrip('/')
-maskint = int(mask1)
-maskbit = '1' * maskint
-maskbit = "{:<032}".format(maskbit)
-moktet1 = int(maskbit[0:8], 2)
-moktet2 = int(maskbit[8:16], 2)
-moktet3 = int(maskbit[16:24], 2)
-moktet4 = int(maskbit[24:32], 2)
-
-mask_template = """
-Mask:
-{4:<}
-{0:<10}{1:<10}{2:<10}{3:<10}
-{0:<08b}  {1:<08b}  {2:<08b}  {3:<08b}
-"""
-
-print(mask_template.format(moktet1, moktet2, moktet3, moktet4, mask))
-
-
+print(ip_output.format(oct1, oct2, oct3, oct4))
+print(mask_output.format(mask, m1, m2, m3, m4))
